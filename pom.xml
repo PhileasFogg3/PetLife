@@ -63,6 +63,10 @@
           <id>sonatype</id>
           <url>https://oss.sonatype.org/content/groups/public/</url>
       </repository>
+      <repository>
+          <id>jitpack.io</id>
+          <url>https://jitpack.io</url>
+      </repository>
   </repositories>
 
   <dependencies>
@@ -71,6 +75,11 @@
           <artifactId>spigot-api</artifactId>
           <version>1.21-R0.1-SNAPSHOT</version>
           <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>com.github.NexiaDevelopers</groupId>
+          <artifactId>NexiaAPI</artifactId>
+          <version>8faeafcc754b6fa35a26203f150bc082c5b129b0</version>
       </dependency>
   </dependencies>
 </project>
