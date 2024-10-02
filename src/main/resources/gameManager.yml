@@ -1,0 +1,28 @@
+# DO NOT MODIFY THIS FILE UNLESS YOU KNOW WHAT YOU ARE DOING
+# THIS GOES FOR YOU TOO PHIL, YOU'RE AN IDIOT WHO WILL MESS THIS UP, EVEN THOUGH YOU CODED IT YOURSELF.
+# Seriously tho... please don't break stuff. Or I will cry :(
+#
+#
+#
+# Is the session active currently?
+session-active: false
+#
+#
+#
+# Important information about the session
+session-information:
+  session-number: -1
+  session-progress:
+#
+#
+#
+# Session Timing Settings
+session-timings:
+  session-length: 10800 # Time in seconds
+  session-break: true # If true there will be a break in the middle of the session. The length of the break is determined in "session-break-length"
+  session-break-length: 900 # Time in seconds
+#
+#
+#
+# Boogeyman Settings
+boogeyman-count: 1 # How many players should be boogeymen?
