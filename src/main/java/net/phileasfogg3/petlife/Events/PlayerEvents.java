@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +51,19 @@ public class PlayerEvents implements Listener {
 
         PlayerNameManager PNM = new PlayerNameManager(playerData);
         PNM.getPlayer(player);
+
+    }
+
+    @EventHandler
+    public void onPlayerLeaveEvent(PlayerQuitEvent e) {
+
+        // Sets a player as offline in playerData.yml
+        Player player = e.getPlayer();
+
+        Map<String, Object> playerDataMap = getPlayerValues(player);
+        playerDataMap.put("Online", false);
+
+        saveConfig(player, playerDataMap);
 
     }
 
