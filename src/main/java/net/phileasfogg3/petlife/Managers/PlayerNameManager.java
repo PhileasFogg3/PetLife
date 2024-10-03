@@ -3,6 +3,7 @@ package net.phileasfogg3.petlife.Managers;
 import net.nexia.nexiaapi.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -33,6 +34,8 @@ public class PlayerNameManager {
                         colour = "Yellow";
                     case 1:
                         colour = "Red";
+                    case 0:
+                        player.setGameMode(GameMode.SPECTATOR);
 
                 }
 
