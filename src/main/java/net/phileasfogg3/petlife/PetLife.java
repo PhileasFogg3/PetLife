@@ -1,6 +1,8 @@
 package net.phileasfogg3.petlife;
 
 import net.nexia.nexiaapi.Config;
+import net.phileasfogg3.petlife.Commands.PetLifeAdminCommand;
+import net.phileasfogg3.petlife.Commands.PetLifeCommand;
 import net.phileasfogg3.petlife.Events.PlayerEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -45,6 +47,8 @@ public final class PetLife extends JavaPlugin {
 
         getCommand("PetLife").setExecutor(new PetLifeCommand());
         getCommand("PetLife").setTabCompleter(new PetLifeCommand());
+        getCommand("PetLifeAdmin").setExecutor(new PetLifeAdminCommand(playerData));
+        getCommand("PetLifeAdmin").setTabCompleter(new PetLifeAdminCommand(playerData));
 
     }
 

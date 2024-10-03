@@ -7,3 +7,4 @@ description: A Minecraft Plugin based on "Third Life" by Grian. Developed by Phi
 website: https://github.com/PhileasFogg3
 commands:
   PetLife:
+  PetLifeAdmin:

@@ -1,4 +1,4 @@
-package net.phileasfogg3.petlife;
+package net.phileasfogg3.petlife.Commands;
 
 import com.google.common.collect.Lists;
 import org.bukkit.command.Command;
