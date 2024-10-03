@@ -1,6 +1,7 @@
 package net.phileasfogg3.petlife.Events;
 
 import net.nexia.nexiaapi.Config;
+import net.phileasfogg3.petlife.Managers.PlayerNameManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -47,7 +48,8 @@ public class PlayerEvents implements Listener {
 
         // Functionality for all players on join
 
-
+        PlayerNameManager PNM = new PlayerNameManager(playerData);
+        PNM.getPlayer(player);
 
     }
 
