@@ -17,7 +17,8 @@ import java.util.Map;
 public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
 
     private Config playerData;
-    public PetLifeAdminCommand(Config playerData) {this.playerData = playerData;}
+    private Config gameMgr;
+    public PetLifeAdminCommand(Config playerData, Config gameMgr) {this.playerData = playerData;}
 
 
     @Override
@@ -40,20 +41,24 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
 
                         if (args.length ==3){
 
-                            String playerName = args[1];
-                            int life = Integer.parseInt(args[2]);
+                            if (player.hasPermission("petlife.admin")){
 
-                            Player targetPlayer = Bukkit.getServer().getPlayerExact(playerName);
+                                String playerName = args[1];
+                                int life = Integer.parseInt(args[2]);
 
-                            if (targetPlayer !=null && targetPlayer.isOnline()) {
+                                Player targetPlayer = Bukkit.getServer().getPlayerExact(playerName);
 
-                                // Sets the life of a specific value of this player
-                                Map<String, Object> playerDataMap = getPlayerValues(targetPlayer);
-                                playerDataMap.put("Lives", life);
-                                saveConfig(targetPlayer, playerDataMap);
+                                if (targetPlayer !=null && targetPlayer.isOnline()) {
 
-                                PlayerNameManager PNM = new PlayerNameManager(playerData);
-                                PNM.getPlayer(targetPlayer);
+                                    // Sets the life of a specific value of this player
+                                    Map<String, Object> playerDataMap = getPlayerValues(targetPlayer);
+                                    playerDataMap.put("Lives", life);
+                                    saveConfig(targetPlayer, playerDataMap);
+
+                                    PlayerNameManager PNM = new PlayerNameManager(playerData);
+                                    PNM.getPlayer(targetPlayer);
+
+                                }
 
                             }
 

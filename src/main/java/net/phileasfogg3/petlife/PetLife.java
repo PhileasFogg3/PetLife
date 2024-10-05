@@ -47,8 +47,8 @@ public final class PetLife extends JavaPlugin {
 
         getCommand("PetLife").setExecutor(new PetLifeCommand());
         getCommand("PetLife").setTabCompleter(new PetLifeCommand());
-        getCommand("PetLifeAdmin").setExecutor(new PetLifeAdminCommand(playerData));
-        getCommand("PetLifeAdmin").setTabCompleter(new PetLifeAdminCommand(playerData));
+        getCommand("PetLifeAdmin").setExecutor(new PetLifeAdminCommand(playerData, gameMgr));
+        getCommand("PetLifeAdmin").setTabCompleter(new PetLifeAdminCommand(playerData, gameMgr));
 
     }
 
