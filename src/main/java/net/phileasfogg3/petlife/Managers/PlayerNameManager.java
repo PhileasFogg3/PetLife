@@ -30,11 +30,18 @@ public class PlayerNameManager {
 
                     case 3:
                         colour = "Green";
+                        player.setGameMode(GameMode.SURVIVAL);
+                        break;
                     case 2:
                         colour = "Yellow";
+                        player.setGameMode(GameMode.SURVIVAL);
+                        break;
                     case 1:
                         colour = "Red";
-                    case 0:
+                        player.setGameMode(GameMode.SURVIVAL);
+                        break;
+                    default:
+                        colour = "White";
                         player.setGameMode(GameMode.SPECTATOR);
 
                 }
@@ -53,11 +60,10 @@ public class PlayerNameManager {
         Scoreboard sm = Bukkit.getScoreboardManager().getMainScoreboard();
 
         // Gets the chat colour object based on the String colour.
-        ChatColor nameColour =ChatColor.valueOf(colour.toUpperCase());
 
         // Gives the player the correct colour in chat and tablist.
-        player.setDisplayName(nameColour + player.getName());
-        player.setPlayerListName(nameColour + player.getName());
+        player.setDisplayName(ChatColor.valueOf(colour.toUpperCase()) + player.getName() + ChatColor.RESET);
+        player.setPlayerListName(ChatColor.valueOf(colour.toUpperCase()) + player.getName() + ChatColor.RESET);
 
         // Adds player to the correct team.
         sm.getTeam(colour).addEntry(player.getName());

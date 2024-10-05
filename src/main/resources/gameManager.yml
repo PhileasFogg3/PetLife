@@ -11,7 +11,7 @@ session-active: false
 #
 # Important information about the session
 session-information:
-  session-number: -1
+  session-number: 0
   session-progress:
 #
 #

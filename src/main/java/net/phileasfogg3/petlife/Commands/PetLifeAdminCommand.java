@@ -4,12 +4,14 @@ import com.google.common.collect.Lists;
 import net.nexia.nexiaapi.Config;
 import net.phileasfogg3.petlife.Managers.PlayerNameManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +20,12 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
 
     private Config playerData;
     private Config gameMgr;
-    public PetLifeAdminCommand(Config playerData, Config gameMgr) {this.playerData = playerData;}
+    public PetLifeAdminCommand(Config playerData, Config gameMgr) {
+
+        this.playerData = playerData;
+        this.gameMgr = gameMgr;
+
+    }
 
 
     @Override
@@ -35,6 +42,31 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
                     case "sessionStart":
 
                         // Starts the session
+                        if (player.hasPermission("petlife.admin")) {
+
+                            if (gameMgr.getData().getInt("session-information.session-number") == 0) {
+
+                                // Do this if this is the first session.
+                                System.out.println("Do this if this is the first session.");
+
+                            } else if (!gameMgr.getData().getBoolean("session-active")) {
+
+                                // Do this if it is not the first session and the session has not already started.
+                                System.out.println("Do this if it is not the first session and the session has not already started.");
+
+                            } else {
+
+                                // Do this if the session has already started.
+                                System.out.println("Do this if the session has already started.");
+
+                            }
+
+                        } else {
+
+                            player.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
+
+                        }
+
 
                         break;
                     case "setlife":
@@ -59,6 +91,10 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
                                     PNM.getPlayer(targetPlayer);
 
                                 }
+
+                            } else {
+
+                                player.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
 
                             }
 
@@ -120,13 +156,20 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 
-        List<String> arguments = Arrays.asList("","","");
-        List<String> list = Lists.newArrayList();
+        List<String> arguments = new ArrayList<>();
 
-        if(args.length == 1) {for (String s : arguments) {if (s.toLowerCase().startsWith(args[0].toLowerCase())) {return list;}}}
+        if (args.length == 1) {
+            arguments = Arrays.asList("sessionStart", "setlife", "setpet", "cure", "confirm");
+        }
 
-        return null;
-
+        // Filter results based on input
+        List<String> filteredSuggestions = new ArrayList<>();
+        for (String suggestion : arguments) {
+            if (suggestion.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
+                filteredSuggestions.add(suggestion);
+            }
+        }
+        return filteredSuggestions;
     }
 
     private Map<String, Object> getPlayerValues(Player player) {

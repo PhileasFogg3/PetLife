@@ -59,6 +59,7 @@ public final class PetLife extends JavaPlugin {
         sm.registerNewTeam("Green").setColor(ChatColor.GREEN);
         sm.registerNewTeam("Yellow").setColor(ChatColor.YELLOW);
         sm.registerNewTeam("Red").setColor(ChatColor.RED);
+        sm.registerNewTeam("White").setColor(ChatColor.WHITE);
 
     }
 

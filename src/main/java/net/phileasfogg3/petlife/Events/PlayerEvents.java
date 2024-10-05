@@ -28,7 +28,7 @@ public class PlayerEvents implements Listener {
 
             Map<String, Object> playerDataMap = new HashMap<String, Object>(){{
 
-                put("Lives", -1);
+                put("Lives", 3);
                 put("Boogeyman", false);
                 put("Pet", "");
                 put("Online", true);
