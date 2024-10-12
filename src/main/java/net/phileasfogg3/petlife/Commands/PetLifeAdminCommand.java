@@ -42,6 +42,8 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
                     case "sessionStart":
 
                         // Starts the session
+
+                        // Checks to see if the player has permissions
                         if (player.hasPermission("petlife.admin")) {
 
                             if (gameMgr.getData().getInt("session-information.session-number") == 0) {
