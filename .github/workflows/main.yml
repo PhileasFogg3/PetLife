@@ -50,4 +50,4 @@ jobs:
           release_name: Release ${{ steps.bump_version.outputs.new_version }}
           body: ${{ github.event.head_commit.message }}  # Use commit message as the body
           files: |
-            target/*.jar  # Adjust file path to your compiled artifacts
+            /home/runner/work/PetLife/PetLife/target/*.jar  # Adjust file path to your compiled artifacts
