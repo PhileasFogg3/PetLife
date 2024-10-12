@@ -38,7 +38,8 @@ jobs:
         id: bump_version
         run: |
           version="${{ env.latest_tag }}"
-          last_word="${{ github.event.head_commit.message }}"
+          commit_message="${{ github.event.head_commit.message }}"
+          last_word=$(echo $commit_message | awk '{print $NF}')
 
           if [[ "$last_word" == "RELEASE" ]]; then
             # Increment major version and reset minor and patch
@@ -69,14 +70,17 @@ jobs:
       - name: Set release name
         id: set_release_name
         run: |
-          commit_message="${{ github.event.head_commit.message }}"
-          last_word=$(echo $commit_message | awk '{print $NF}')
+          last_word=$(echo "${{ github.event.head_commit.message }}" | awk '{print $NF}')
           if [[ "$last_word" == "RELEASE" || "$last_word" == "SNAPSHOT" || "$last_word" == "PRE-RELEASE" ]]; then
             release_name="$last_word"
+            # Use last word as the release tag as well
+            tag_name="${{ env.new_version }}"
           else
             release_name="Release ${{ env.new_version }}"
+            tag_name="${{ env.new_version }}"
           fi
           echo "release_name=$release_name" >> $GITHUB_ENV
+          echo "tag_name=$tag_name" >> $GITHUB_ENV
 
       - name: Create Release
         id: create_release
@@ -84,7 +88,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.new_version }}
+          tag_name: ${{ env.tag_name }}  # Use the dynamically set tag name
           name: ${{ env.release_name }}  # Use the dynamically set release name
           body: ${{ github.event.head_commit.message }}
           files: target/*.jar  # Include JAR in the release
