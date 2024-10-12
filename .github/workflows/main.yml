@@ -94,4 +94,4 @@ jobs:
           name: ${{ env.release_name }}  # Use the dynamically set release name
           body: ${{ github.event.head_commit.message }}
           files: target/*.jar  # Include JAR in the release
-          pre_release: ${{ fromJson(env.is_pre_release) }}  # Convert string to boolean
+          prerelease: ${{ fromJson(env.is_pre_release) }}  # Convert string to boolean
