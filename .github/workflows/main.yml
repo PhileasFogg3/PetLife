@@ -67,16 +67,22 @@ jobs:
           git tag ${{ env.new_version }}
           git push origin ${{ env.new_version }}
 
-      - name: Set release name
+      - name: Set release name and pre-release flag
         id: set_release_name
         run: |
           last_word=$(echo "${{ github.event.head_commit.message }}" | awk '{print $NF}')
-          if [[ "$last_word" == "RELEASE" || "$last_word" == "SNAPSHOT" || "$last_word" == "PRE-RELEASE" ]]; then
+          if [[ "$last_word" == "RELEASE" ]]; then
             release_name="$last_word ${{ env.new_version }}"  # Append version to release name
+            is_pre_release="false"
+          elif [[ "$last_word" == "SNAPSHOT" || "$last_word" == "PRE-RELEASE" ]]; then
+            release_name="$last_word ${{ env.new_version }}"
+            is_pre_release="true"
           else
             release_name="Release ${{ env.new_version }}"
+            is_pre_release="false"
           fi
           echo "release_name=$release_name" >> $GITHUB_ENV
+          echo "is_pre_release=$is_pre_release" >> $GITHUB_ENV
 
       - name: Create Release
         id: create_release
@@ -88,3 +94,4 @@ jobs:
           name: ${{ env.release_name }}  # Use the dynamically set release name
           body: ${{ github.event.head_commit.message }}
           files: target/*.jar  # Include JAR in the release
+          pre_release: ${{ env.is_pre_release }}  # Set pre-release flag
