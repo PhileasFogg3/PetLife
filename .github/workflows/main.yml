@@ -1,0 +1,52 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - master 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '21'  
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml  
+
+      - name: Get the current version tag
+        id: get_version
+        run: |
+          VERSION=$(git describe --tags --abbrev=0 || echo "v0.0.0")
+          echo "Current version is $VERSION"
+          echo "::set-output name=current_version::$VERSION"
+
+      - name: Bump the version number
+        id: bump_version
+        run: |
+          version="${{ steps.get_version.outputs.current_version }}"
+          major=$(echo $version | cut -d. -f1 | cut -dv -f2)
+          minor=$(echo $version | cut -d. -f2)
+          patch=$(echo $version | cut -d. -f3)
+          new_version="v$major.$minor.$((patch+1))"
+          echo "New version is $new_version"
+          echo "::set-output name=new_version::$new_version"
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.bump_version.outputs.new_version }}
+          release_name: Release ${{ steps.bump_version.outputs.new_version }}
+          body: ${{ github.event.head_commit.message }}  # Use commit message as the body
+          files: |
+            target/*.jar  # Adjust file path to your compiled artifacts
