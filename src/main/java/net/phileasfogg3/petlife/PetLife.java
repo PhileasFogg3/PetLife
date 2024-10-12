@@ -39,7 +39,7 @@ public final class PetLife extends JavaPlugin {
 
     public void registerEvents() {
 
-        Bukkit.getPluginManager().registerEvents(new PlayerEvents(playerData), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerEvents(playerData), this); // Make sure the necessary yml files are passed into the events
 
     }
 
@@ -47,19 +47,20 @@ public final class PetLife extends JavaPlugin {
 
         getCommand("PetLife").setExecutor(new PetLifeCommand());
         getCommand("PetLife").setTabCompleter(new PetLifeCommand());
-        getCommand("PetLifeAdmin").setExecutor(new PetLifeAdminCommand(playerData, gameMgr));
+        getCommand("PetLifeAdmin").setExecutor(new PetLifeAdminCommand(playerData, gameMgr)); // Make sure the necessary yml files are passed into the commands
         getCommand("PetLifeAdmin").setTabCompleter(new PetLifeAdminCommand(playerData, gameMgr));
 
     }
 
     public void createTeams() {
 
+        // Creates teams that correspond to colours in the game
         Scoreboard sm = Bukkit.getScoreboardManager().getMainScoreboard();
 
         sm.registerNewTeam("Green").setColor(ChatColor.GREEN);
         sm.registerNewTeam("Yellow").setColor(ChatColor.YELLOW);
         sm.registerNewTeam("Red").setColor(ChatColor.RED);
-        sm.registerNewTeam("White").setColor(ChatColor.WHITE);
+        sm.registerNewTeam("White").setColor(ChatColor.WHITE); // White team is the "dead" team
 
     }
 
@@ -67,8 +68,10 @@ public final class PetLife extends JavaPlugin {
 
         Scoreboard sm = Bukkit.getScoreboardManager().getMainScoreboard();
 
+        // Loops through all teams
         sm.getTeams().forEach(team -> {
 
+            // Deletes all teams that it can find
             team.unregister();
 
         });
