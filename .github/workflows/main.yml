@@ -72,15 +72,11 @@ jobs:
         run: |
           last_word=$(echo "${{ github.event.head_commit.message }}" | awk '{print $NF}')
           if [[ "$last_word" == "RELEASE" || "$last_word" == "SNAPSHOT" || "$last_word" == "PRE-RELEASE" ]]; then
-            release_name="$last_word"
-            # Use last word as the release tag as well
-            tag_name="${{ env.new_version }}"
+            release_name="$last_word ${{ env.new_version }}"  # Append version to release name
           else
             release_name="Release ${{ env.new_version }}"
-            tag_name="${{ env.new_version }}"
           fi
           echo "release_name=$release_name" >> $GITHUB_ENV
-          echo "tag_name=$tag_name" >> $GITHUB_ENV
 
       - name: Create Release
         id: create_release
@@ -88,7 +84,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.tag_name }}  # Use the dynamically set tag name
+          tag_name: ${{ env.new_version }}  # Use the dynamically set tag name
           name: ${{ env.release_name }}  # Use the dynamically set release name
           body: ${{ github.event.head_commit.message }}
           files: target/*.jar  # Include JAR in the release
