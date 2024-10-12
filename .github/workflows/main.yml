@@ -12,6 +12,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: List tags
+        run: git tag
 
       - name: Set up JDK
         uses: actions/setup-java@v2
