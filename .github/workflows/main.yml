@@ -72,7 +72,7 @@ jobs:
         run: |
           last_word=$(echo "${{ github.event.head_commit.message }}" | awk '{print $NF}')
           if [[ "$last_word" == "RELEASE" ]]; then
-            release_name="$last_word ${{ env.new_version }}"  # Append version to release name
+            release_name="$last_word ${{ env.new_version }}"
             is_pre_release="false"
           elif [[ "$last_word" == "SNAPSHOT" || "$last_word" == "PRE-RELEASE" ]]; then
             release_name="$last_word ${{ env.new_version }}"
@@ -94,4 +94,4 @@ jobs:
           name: ${{ env.release_name }}  # Use the dynamically set release name
           body: ${{ github.event.head_commit.message }}
           files: target/*.jar  # Include JAR in the release
-          pre_release: ${{ env.is_pre_release }}  # Set pre-release flag
+          pre_release: ${{ fromJson(env.is_pre_release) }}  # Convert string to boolean
