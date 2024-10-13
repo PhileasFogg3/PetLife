@@ -3,6 +3,7 @@ package net.phileasfogg3.petlife.Commands;
 import com.google.common.collect.Lists;
 import net.nexia.nexiaapi.Config;
 import net.phileasfogg3.petlife.Managers.PlayerNameManager;
+import net.phileasfogg3.petlife.Managers.SessionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -43,18 +44,38 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
 
                         // Starts the session
 
+                        boolean sessionActive = gameMgr.getData().getBoolean("session-active");
+                        int sessionNumber = gameMgr.getData().getInt("session-information.session-number");
+
                         // Checks to see if the player has permissions
                         if (player.hasPermission("petlife.admin")) {
 
-                            if (gameMgr.getData().getInt("session-information.session-number") == 0) {
+                            if (sessionNumber == 0 && !sessionActive) {
 
                                 // Do this if this is the first session.
                                 System.out.println("Do this if this is the first session.");
 
-                            } else if (!gameMgr.getData().getBoolean("session-active")) {
+                                int newSessionNumber = sessionNumber + 1;
+
+                                gameMgr.getData().set("session-information.session-number", newSessionNumber);
+                                gameMgr.getData().set("session-active", true);
+                                gameMgr.save();
+
+                                // Controls Session Timings
+                                SessionManager sM = new SessionManager(gameMgr);
+                                sM.sessionTimeManager();
+
+
+                            } else if (sessionNumber > 0 && !sessionActive) {
 
                                 // Do this if it is not the first session and the session has not already started.
                                 System.out.println("Do this if it is not the first session and the session has not already started.");
+
+                                int newSessionNumber = sessionNumber + 1;
+
+                                gameMgr.getData().set("session-information.session-number", newSessionNumber);
+                                gameMgr.getData().set("session-active", true);
+                                gameMgr.save();
 
                             } else {
 
