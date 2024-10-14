@@ -161,7 +161,25 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
                         break;
                     case "confirm":
 
-                        // Confirms an automatic action taken by the server
+                        if (player.hasPermission("petlife.admin")){
+
+                            // Confirms an automatic action taken by the server
+                            if (gameMgr.getData().getBoolean("confirmation.required")) {
+
+                                gameMgr.getData().set("confirmation.value", 1);
+                                player.sendMessage("Confirmed!");
+
+                            } else {
+
+                                player.sendMessage("Nothing to confirm!");
+
+                            }
+
+                        } else {
+
+                            player.sendMessage("You do not have permission to use this command!");
+
+                        }
 
                 }
 

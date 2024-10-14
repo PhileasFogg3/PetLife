@@ -6,13 +6,16 @@
 #
 # Is the session active currently?
 session-active: false
+break-active: false
 #
 #
 #
 # Important information about the session
 session-information:
   session-number: 0
-  session-progress:
+  first-half-progress: -1
+  break-progress: -1
+  second-half-progress: -1
 #
 #
 #
@@ -26,3 +29,10 @@ session-timings:
 #
 # Boogeyman Settings
 boogeyman-count: 1 # How many players should be boogeymen?
+#
+#
+#
+# ABSOLUTELY DON'T TOUCH THIS PART, EVEN IF YOU THINK YOU KNOW WHAT YOU'RE DOING, YOU DON'T. PHIL, I'M LOOKING AT YOU
+confirmation:
+  required: false
+  value: 0
