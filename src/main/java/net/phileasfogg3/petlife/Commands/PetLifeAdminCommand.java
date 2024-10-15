@@ -1,6 +1,5 @@
 package net.phileasfogg3.petlife.Commands;
 
-import com.google.common.collect.Lists;
 import net.nexia.nexiaapi.Config;
 import net.phileasfogg3.petlife.Managers.PlayerNameManager;
 import net.phileasfogg3.petlife.Managers.SessionManager;
@@ -63,7 +62,7 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
 
                                 // Controls Session Timings
                                 SessionManager sM = new SessionManager(gameMgr);
-                                sM.sessionTimeManager();
+                                sM.sessionTimeInitializer();
 
 
                             } else if (sessionNumber > 0 && !sessionActive) {
