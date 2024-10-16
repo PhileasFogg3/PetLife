@@ -14,8 +14,12 @@ import java.util.Map;
 public class PlayerEvents implements Listener {
 
     private Config playerData;
+    private Config gameMgr;
 
-    public PlayerEvents(Config playerData) {this.playerData = playerData;}
+    public PlayerEvents(Config playerData, Config gameMgr) {
+        this.playerData = playerData;
+        this.gameMgr = gameMgr;
+    }
 
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent e){
@@ -36,7 +40,7 @@ public class PlayerEvents implements Listener {
             saveConfig(player, playerDataMap);
         }
         // Functionality for all players on join
-        PlayerNameManager PNM = new PlayerNameManager(playerData);
+        PlayerNameManager PNM = new PlayerNameManager(playerData, gameMgr);
         PNM.getPlayer(player);
     }
 

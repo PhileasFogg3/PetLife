@@ -4,17 +4,26 @@ import net.nexia.nexiaapi.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
+
+import java.util.Map;
 
 public class PlayerNameManager {
 
     private Config playerData;
+    private Config gameMgr;
 
-    public PlayerNameManager(Config playerData) {this.playerData = playerData;}
+    public PlayerNameManager(Config playerData, Config gameMgr) {
+        this.playerData = playerData;
+        this.gameMgr = gameMgr;
+    }
 
     public void getPlayer(Player player){
-
+        TeamsManager tM = new TeamsManager(gameMgr);
+        Map<Integer, String> teamsMap = tM.getTeamsFromYML();
         // Gets all the players in playerData.yml
         playerData.getData().getConfigurationSection("players").getKeys(false).forEach(key -> {
             // Finds the player whose name we wish to change.
@@ -25,19 +34,19 @@ public class PlayerNameManager {
                 // Assigns the colour variable to match the number of lives the player has
                 switch (lives) {
                     case 3:
-                        colour = "Green";
+                        colour = teamsMap.get(3);
                         player.setGameMode(GameMode.SURVIVAL);
                         break;
                     case 2:
-                        colour = "Yellow";
+                        colour = teamsMap.get(2);
                         player.setGameMode(GameMode.SURVIVAL);
                         break;
                     case 1:
-                        colour = "Red";
+                        colour = teamsMap.get(1);
                         player.setGameMode(GameMode.SURVIVAL);
                         break;
                     default:
-                        colour = "White";
+                        colour = teamsMap.get(0);
                         player.setGameMode(GameMode.SPECTATOR);
                 }
                 changeName(player, colour);
