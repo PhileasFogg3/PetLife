@@ -1,6 +1,7 @@
 package net.phileasfogg3.petlife.Commands;
 
 import net.nexia.nexiaapi.Config;
+import net.phileasfogg3.petlife.Managers.BoogeymenManager;
 import net.phileasfogg3.petlife.Managers.PlayerNameManager;
 import net.phileasfogg3.petlife.Managers.SessionManager;
 import org.bukkit.Bukkit;
@@ -20,11 +21,11 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
 
     private Config playerData;
     private Config gameMgr;
+
     public PetLifeAdminCommand(Config playerData, Config gameMgr) {
         this.playerData = playerData;
         this.gameMgr = gameMgr;
     }
-
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -41,23 +42,17 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
                             if (sessionNumber == 0 && !sessionActive) {
                                 // Do this if this is the first session.
                                 System.out.println("Do this if this is the first session.");
-                                int newSessionNumber = sessionNumber + 1;
-                                gameMgr.getData().set("session-information.session-number", newSessionNumber);
-                                gameMgr.getData().set("session-active", true);
-                                gameMgr.save();
-                                // Controls Session Timings
-                                SessionManager sM = new SessionManager(gameMgr);
-                                sM.sessionTimeInitializer();
+                                // Starts the session
+                                SessionManager sM = new SessionManager(gameMgr, playerData);
+                                sM.sessionStart(sessionNumber);
                             } else if (sessionNumber > 0 && !sessionActive) {
                                 // Do this if it is not the first session and the session has not already started.
                                 System.out.println("Do this if it is not the first session and the session has not already started.");
-                                int newSessionNumber = sessionNumber + 1;
-                                gameMgr.getData().set("session-information.session-number", newSessionNumber);
-                                gameMgr.getData().set("session-active", true);
-                                gameMgr.save();
-                            } else {
+                                SessionManager sM = new SessionManager(gameMgr, playerData);
+                                sM.sessionStart(sessionNumber);
+                            } else if (sessionActive){
                                 // Do this if the session has already started.
-                                System.out.println("Do this if the session has already started.");
+                                System.out.println("The session has already started. If you're trying to resume after a crash, use /petlifeadmin resume");
                             }
                         } else {
                             player.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
@@ -68,14 +63,23 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
                             if (player.hasPermission("petlife.admin")){
                                 String playerName = args[1];
                                 int life = Integer.parseInt(args[2]);
-                                Player targetPlayer = Bukkit.getServer().getPlayerExact(playerName);
-                                if (targetPlayer !=null && targetPlayer.isOnline()) {
-                                    // Sets the life of a specific value of this player
-                                    Map<String, Object> playerDataMap = getPlayerValues(targetPlayer);
-                                    playerDataMap.put("Lives", life);
-                                    saveConfig(targetPlayer, playerDataMap);
-                                    PlayerNameManager PNM = new PlayerNameManager(playerData, gameMgr);
-                                    PNM.getPlayer(targetPlayer);
+                                //Can only set between 1 and 3 lives
+                                if (life <= 3 && life > 0) {
+                                    Player targetPlayer = Bukkit.getServer().getPlayerExact(playerName);
+                                    // Makes sure the target player is online
+                                    if (targetPlayer !=null && targetPlayer.isOnline()) {
+                                        // Sets the life of a specific value of this player
+                                        Map<String, Object> playerDataMap = getPlayerValues(targetPlayer);
+                                        playerDataMap.put("Lives", life);
+                                        saveConfig(targetPlayer, playerDataMap);
+                                        PlayerNameManager PNM = new PlayerNameManager(playerData, gameMgr);
+                                        PNM.getPlayer(targetPlayer);
+                                        player.sendMessage("You have set " + targetPlayer.getDisplayName() + "'s life to " + life + ".");
+                                    } else {
+                                        player.sendMessage(ChatColor.RED + "That player is not online or doesn't exist.");
+                                    }
+                                } else {
+                                    player.sendMessage(ChatColor.RED + "You have set an invalid number of lives!");
                                 }
                             } else {
                                 player.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
@@ -113,6 +117,26 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
                         } else {
                             player.sendMessage("You do not have permission to use this command!");
                         }
+                        break;
+                    case "resume":
+                        if (player.hasPermission("petlife.admin")){
+                            if (gameMgr.getData().getInt("session-information.first-half-progress") == -1 && gameMgr.getData().getInt("session-information.break-progress") == -1 && gameMgr.getData().getInt("session-information.second-half-progress") == -1) {
+                                player.sendMessage("There is nothing to resume");
+                            } else if (gameMgr.getData().getInt("session-information.first-half-progress") != -1){
+                                SessionManager sM = new SessionManager(gameMgr, playerData);
+                                sM.resumeInitializer(gameMgr.getData().getInt("session-information.first-half-progress"), 1);
+                            } else if (gameMgr.getData().getInt("session-information.break-progress") != -1){
+                                SessionManager sM = new SessionManager(gameMgr, playerData);
+                                sM.resumeInitializer(gameMgr.getData().getInt("session-information.break-progress"), 2);
+                            } else if (gameMgr.getData().getInt("session-information.second-half-progress") != -1){
+                                SessionManager sM = new SessionManager(gameMgr, playerData);
+                                sM.resumeInitializer(gameMgr.getData().getInt("session-information.second-half-progress"), 3);
+                            } else {
+                                player.sendMessage("Something has gone wrong! oopsie. Phil bad");
+                            }
+                        } else {
+                            player.sendMessage("You do not have permission to use this command!");
+                        }
                 }
             }
         } else {
@@ -125,7 +149,18 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         List<String> arguments = new ArrayList<>();
         if (args.length == 1) {
-            arguments = Arrays.asList("sessionStart", "setlife", "setpet", "cure", "confirm");
+            arguments = Arrays.asList("sessionStart", "setlife", "setpet", "cure", "confirm", "resume");
+        }
+        if (args.length == 2 && !args[0].equals("confirm") && !args[0].equals("sessionStart") && !args[0].equals("resume")) {
+            for (Player onlinePlayers : Bukkit.getServer().getOnlinePlayers()) {
+                arguments = Arrays.asList(onlinePlayers.getName());
+            }
+        }
+        if (args.length == 3) {
+            if (args[0].equals("setlife")) {
+                arguments = Arrays.asList("1", "2", "3");
+            }
+            if (args[0].equals("setpet")) {}
         }
         // Filter results based on input
         List<String> filteredSuggestions = new ArrayList<>();

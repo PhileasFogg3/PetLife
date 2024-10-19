@@ -15,7 +15,7 @@ session-information:
   session-number: 0
   first-half-progress: -1
   break-progress: -1
-  second-half-progress: -1
+  second-half-progress: -1 # ALSO USED FOR SESSIONS WITH NO BREAKS
 #
 #
 #
@@ -24,6 +24,8 @@ session-timings:
   session-length: 10800 # Time in seconds
   session-break: true # If true there will be a break in the middle of the session. The length of the break is determined in "session-break-length"
   session-break-length: 900 # Time in seconds
+  time-to-boogeymen-selection: 300 # The time in seconds until the boogeymen is selected. This time starts from the moment the session is started
+  time-to-pet-selection: 600 # The time in seconds until the pets are distributed. This time starts from the moment the session is started
 #
 #
 #

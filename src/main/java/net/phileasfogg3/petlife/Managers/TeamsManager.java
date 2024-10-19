@@ -2,7 +2,6 @@ package net.phileasfogg3.petlife.Managers;
 
 import net.nexia.nexiaapi.Config;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.ArrayList;

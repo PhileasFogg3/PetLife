@@ -9,8 +9,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class SessionManager {
 
     private final Config gameMgr;
+    private final Config playerData;
 
-    public SessionManager(Config gameMgr) {this.gameMgr = gameMgr;}
+    public SessionManager(Config gameMgr, Config playerData) {
+        this.gameMgr = gameMgr;
+        this.playerData = playerData;
+    }
 
     public void sessionTimeInitializer() {
 
@@ -40,6 +44,27 @@ public class SessionManager {
         } else {
             // If there is no break
             sessionTimer(new int[]{sessionLength}, "Time left of the session: ", 3, null);
+        }
+    }
+
+    public void resumeInitializer(int time, int id) {
+
+        if (id == 1) {
+            sessionTimer(new int[]{time}, "Time left until the break: ", 1, () ->
+                    // Counts down the time left of the break.
+                    sessionTimer(new int[]{gameMgr.getData().getInt("session-timings.session-break-length")}, "Time left of the break: ", 2, () ->
+                            // Counts down the second half of the session, until the session's end.
+                            sessionTimer(new int[]{gameMgr.getData().getInt("session-timings.session-length")/2}, "Time left of the session: ", 3, null)
+                    )
+            );
+        } else if (id == 2) {
+            sessionTimer(new int[]{time}, "Time left of the break: ", 2, () ->
+                    // Counts down the time left of the break.
+                    sessionTimer(new int[]{gameMgr.getData().getInt("session-timings.session-length")/2}, "Time left of the session: ", 3, null));
+                            // Counts down the second half of the session, until the session's end.
+        } else if (id == 3) {
+            sessionTimer(new int[]{time}, "Time left of the session: ", 3, null);
+                    // Counts down the time left of the break.
         }
     }
 
@@ -145,5 +170,16 @@ public class SessionManager {
         for (Player onlinePlayers : Bukkit.getServer().getOnlinePlayers()) {
             onlinePlayers.setPlayerListFooter(body + time/60 + suffix); // Converts time to minutes.
         }
+    }
+
+    public void sessionStart(int sessionNumber) {
+        int newSessionNumber = sessionNumber + 1;
+        gameMgr.getData().set("session-information.session-number", newSessionNumber);
+        gameMgr.getData().set("session-active", true);
+        gameMgr.save();
+        sessionTimeInitializer();
+        // Picks boogeymen
+        BoogeymenManager bM = new BoogeymenManager(gameMgr, playerData);
+        bM.selectBoogeymen();
     }
 }
