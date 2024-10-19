@@ -30,7 +30,9 @@ session-timings:
 #
 #
 # Boogeyman Settings
-boogeyman-count: 1 # How many players should be boogeymen?
+boogeymen-settings:
+  boogeymen-count: 1 # How many players should be boogeymen?
+  boogeymen-draw-time: 300 # Time in seconds until the boogeymen is drawn after session start.
 #
 #
 #

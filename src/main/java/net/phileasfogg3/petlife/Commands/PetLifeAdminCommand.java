@@ -100,8 +100,10 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
                         if (args.length ==2){
                             String playerName = args[1];
                             Player targetPlayer = Bukkit.getServer().getPlayerExact(playerName);
-                            if (targetPlayer !=null && targetPlayer.isOnline()) {
+                            if (targetPlayer !=null && targetPlayer.isOnline() && playerData.getData().getBoolean("players." + targetPlayer.getUniqueId().toString() + ".Boogeyman")) {
                                 // Cures the specific player if they are the boogeyman
+                                BoogeymenManager BM = new BoogeymenManager(gameMgr, playerData);
+                                BM.cureBoogeymen(targetPlayer);
                             }
                         }
                         break;

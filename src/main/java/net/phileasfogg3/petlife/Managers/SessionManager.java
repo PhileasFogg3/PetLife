@@ -136,6 +136,9 @@ public class SessionManager {
                 gameMgr.getData().set("session-information.second-half-progress", -1);
                 gameMgr.getData().set("session-active", false);
                 gameMgr.save();
+                // Punish Boogeymen that have failed
+                BoogeymenManager BM = new BoogeymenManager(gameMgr, playerData);
+                BM.punishBoogeymen();
                 break;
         }
     }
