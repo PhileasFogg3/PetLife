@@ -104,6 +104,8 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
                                 // Cures the specific player if they are the boogeyman
                                 BoogeymenManager BM = new BoogeymenManager(gameMgr, playerData);
                                 BM.cureBoogeymen(targetPlayer);
+                            } else {
+                                player.sendMessage("Unable to cure this player!");
                             }
                         }
                         break;

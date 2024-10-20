@@ -1,10 +1,14 @@
 package net.phileasfogg3.petlife.Events;
 
 import net.nexia.nexiaapi.Config;
+import net.phileasfogg3.petlife.Managers.BoogeymenManager;
 import net.phileasfogg3.petlife.Managers.PlayerNameManager;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -51,6 +55,40 @@ public class PlayerEvents implements Listener {
         Map<String, Object> playerDataMap = getPlayerValues(player);
         playerDataMap.put("Online", false);
         saveConfig(player, playerDataMap);
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent e) {
+        if (!gameMgr.getData().getBoolean("session-active") && !gameMgr.getData().getBoolean("break-active")) {
+            return;
+        }
+        Player victim = e.getEntity();
+        if (victim.getKiller() != null) {
+            // Victim was killed by a player
+            deathHandler(victim, victim.getKiller());
+        } else {
+            deathHandler(victim, null);
+        }
+    }
+
+    public void deathHandler(Player victim, Player killer) {
+        Map<String, Object> victimMap = getPlayerValues(victim);
+        int victimOldLife = playerData.getData().getInt("players." + victim.getUniqueId() + ".Lives");
+        victimMap.put("Lives", victimOldLife-1);
+        saveConfig(victim, victimMap);
+        PlayerNameManager PNM = new PlayerNameManager(playerData, gameMgr);
+        PNM.getPlayer(victim);
+        if (victimOldLife-1 == 0) {
+            System.out.println(victim.getName() + " has been eliminated!");
+            Bukkit.getWorld(victim.getWorld().getName()).spawn(victim.getLocation().subtract(0, 1, 0), LightningStrike.class);
+        }
+        if (killer == null) {
+            // A null player means it can't have been a boogeymen kill.
+            System.out.println(victim.getName() + " has been killed by the world!");
+        } else if (playerData.getData().getBoolean("players." + killer.getUniqueId() + "Boogeyman")) {
+            BoogeymenManager BM = new BoogeymenManager(playerData, gameMgr);
+            BM.cureBoogeymen(killer);
+        }
     }
 
     private Map<String, Object> getPlayerValues(Player player) {

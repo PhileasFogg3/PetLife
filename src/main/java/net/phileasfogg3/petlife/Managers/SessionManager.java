@@ -19,11 +19,11 @@ public class SessionManager {
     public void sessionTimeInitializer() {
 
         int sessionLength = gameMgr.getData().getInt("session-timings.session-length");
-        boolean sessionBreak = gameMgr.getData().getBoolean("session-timings.session-break");
+        boolean sessionBreak = gameMgr.getData().getBoolean("session-timings.session-break"); // Set true or false in gameManager.yml Do you want a break, or not?
         int sessionBreakLength = gameMgr.getData().getInt("session-timings.session-break-length");
         int sessionHalf = sessionLength / 2;
 
-        if (sessionHalf% 60 !=0) {
+        if (sessionHalf % 60 !=0) {
             sessionHalf += (60-sessionHalf % 60); // Rounding up to nearest 60 if not already  multiple of 60.
         }
         if (sessionBreakLength % 60 !=0) {
@@ -34,11 +34,11 @@ public class SessionManager {
             int finalSessionBreakLength = sessionBreakLength;
             int finalSessionHalf = sessionHalf;
             // Counts down the first half of the session, until the break.
-            sessionTimer(new int[]{sessionHalf}, "Time left until the break: ", 1, () ->
+            sessionTimer(new int[]{sessionHalf}, "Time left until the break: ", 1, () -> // 1 is before break
                     // Counts down the time left of the break.
-                    sessionTimer(new int[]{finalSessionBreakLength}, "Time left of the break: ", 2, () ->
+                    sessionTimer(new int[]{finalSessionBreakLength}, "Time left of the break: ", 2, () -> // 2 is during break
                             // Counts down the second half of the session, until the session's end.
-                            sessionTimer(new int[]{finalSessionHalf}, "Time left of the session: ", 3, null)
+                            sessionTimer(new int[]{finalSessionHalf}, "Time left of the session: ", 3, null) // 3 is after break
                     )
             );
         } else {
@@ -139,6 +139,10 @@ public class SessionManager {
                 // Punish Boogeymen that have failed
                 BoogeymenManager BM = new BoogeymenManager(gameMgr, playerData);
                 BM.punishBoogeymen();
+                // Send message to players - session over
+                for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
+                    onlinePlayers.sendMessage("The session is now over");
+                }
                 break;
         }
     }
@@ -148,17 +152,15 @@ public class SessionManager {
         switch (id) {
             case 1:
                 gameMgr.getData().set("session-information.first-half-progress", time);
-                gameMgr.save();
                 break;
             case 2:
                 gameMgr.getData().set("session-information.break-progress", time);
-                gameMgr.save();
                 break;
             case 3:
                 gameMgr.getData().set("session-information.second-half-progress", time);
-                gameMgr.save();
                 break;
         }
+        gameMgr.save();
     }
 
     public void updateTabList(String body, int time) {

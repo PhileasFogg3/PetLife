@@ -4,6 +4,7 @@ import net.nexia.nexiaapi.Config;
 import net.phileasfogg3.petlife.Commands.PetLifeAdminCommand;
 import net.phileasfogg3.petlife.Commands.PetLifeCommand;
 import net.phileasfogg3.petlife.Events.PlayerEvents;
+import net.phileasfogg3.petlife.Events.WorldEvents;
 import net.phileasfogg3.petlife.Managers.TeamsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -40,6 +41,7 @@ public final class PetLife extends JavaPlugin {
 
     public void registerEvents() {
         Bukkit.getPluginManager().registerEvents(new PlayerEvents(playerData, gameMgr), this); // Make sure the necessary yml files are passed into the events
+        Bukkit.getPluginManager().registerEvents(new WorldEvents(), this);
     }
 
     public void registerCommands() {

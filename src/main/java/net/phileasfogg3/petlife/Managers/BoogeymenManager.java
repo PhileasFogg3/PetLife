@@ -34,7 +34,8 @@ public class BoogeymenManager {
                             playerDataMap.put("Boogeyman", true);
                             saveConfig(key, playerDataMap);
                             // Tell the chosen players that they are the Boogeymen
-                            Player player = Bukkit.getPlayer(key);
+                            UUID uuid = UUID.fromString(key);
+                            Player player = Bukkit.getPlayer(uuid);
                             player.sendMessage("You are the Boogeyman and are now hostile to all players. Kill to be cured, or you shall be punished...");
                         }
                     });
