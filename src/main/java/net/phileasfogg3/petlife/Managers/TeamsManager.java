@@ -30,5 +30,4 @@ public class TeamsManager {
         sm.getTeams().forEach(team -> teamsOnServer.add(team.getName()));
         return teamsOnServer;
     }
-
 }

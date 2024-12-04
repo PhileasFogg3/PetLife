@@ -177,8 +177,8 @@ public class SessionManager {
         }
     }
 
-    public void sessionStart(int sessionNumber) {
-        int newSessionNumber = sessionNumber + 1;
+    public void sessionStart(int oldSessionNumber) {
+        int newSessionNumber = oldSessionNumber + 1;
         gameMgr.getData().set("session-information.session-number", newSessionNumber);
         gameMgr.getData().set("session-active", true);
         gameMgr.save();
@@ -186,5 +186,6 @@ public class SessionManager {
         // Picks boogeymen
         BoogeymenManager bM = new BoogeymenManager(gameMgr, playerData);
         bM.selectBoogeymen();
+        // Distribute Pets
     }
 }

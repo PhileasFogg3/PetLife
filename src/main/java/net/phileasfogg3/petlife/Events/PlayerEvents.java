@@ -59,7 +59,7 @@ public class PlayerEvents implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
-        if (!gameMgr.getData().getBoolean("session-active") && !gameMgr.getData().getBoolean("break-active")) {
+        if (!gameMgr.getData().getBoolean("session-active") || gameMgr.getData().getBoolean("break-active")) {
             return;
         }
         Player victim = e.getEntity();
@@ -80,7 +80,6 @@ public class PlayerEvents implements Listener {
         PNM.getPlayer(victim);
         if (victimOldLife-1 == 0) {
             System.out.println(victim.getName() + " has been eliminated!");
-            Bukkit.getWorld(victim.getWorld().getName()).spawn(victim.getLocation().subtract(0, 1, 0), LightningStrike.class);
         }
         if (killer == null) {
             // A null player means it can't have been a boogeymen kill.

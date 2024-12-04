@@ -14,6 +14,7 @@ import java.util.UUID;
 public class BoogeymenManager {
     private Config gameMgr;
     private Config playerData;
+
     public BoogeymenManager(Config gameMgr, Config playerData) {
         this.gameMgr = gameMgr;
         this.playerData = playerData;
@@ -58,7 +59,7 @@ public class BoogeymenManager {
                 Player player = Bukkit.getPlayer(uuid);
                 Map<String, Object> playerDataMap = getPlayerValues(player.getUniqueId().toString());
                 int oldLife = playerData.getData().getInt("players." + key + ".Lives");
-                playerDataMap.put(key, oldLife-1);
+                playerDataMap.put("Lives", oldLife-1);
                 playerDataMap.put("Boogeyman", false);
                 saveConfig(player.getUniqueId().toString(), playerDataMap);
                 player.sendMessage("You have failed. You have now been punished");

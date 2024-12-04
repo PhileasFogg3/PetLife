@@ -1,0 +1,103 @@
+Pets:
+  # Player has 20 hearts
+  # Player does 1 heart of damage
+  Sheep:
+    Attack: 2
+    Hearts: 30
+    Speed: 0.7
+    Ability: ''
+  Cow:
+    Attack: 2
+    Hearts: 30
+    Speed: 0.7
+    Ability: ''
+  Chicken:
+    Attack: 3
+    Hearts: 20
+    Speed: 1
+    Ability: ''
+  Pig:
+    Attack: 2
+    Hearts: 30
+    Speed: 0.7
+    Ability: ''
+  Cat:
+    Attack: 3
+    Hearts: 30
+    Speed: 1
+    Ability: ''
+  Parrot:
+    Attack: 4
+    Hearts: 15
+    Speed: 1.5
+    Ability: ''
+  Nitwit:
+    Attack: 1
+    Hearts: 40
+    Speed: 0.6
+    Ability: ''
+  Axolotl:
+    Attack: 2
+    Hearts: 30
+    Speed: 1
+    Ability: ''
+  Llama:
+    Attack: 2
+    Hearts: 40
+    Speed: 0.7
+    Ability: ''
+  Horse:
+    Attack: 2
+    Hearts: 40
+    Speed: 0.7
+    Ability: ''
+  Wolf:
+    Attack: 3
+    Hearts: 30
+    Speed: 0.9
+    Ability: ''
+  Bat:
+    Attack: 2
+    Hearts: 15
+    Speed: 1.5
+    Ability: ''
+  Armadillo:
+    Attack: 1
+    Hearts: 50
+    Speed: 0.5
+    Ability: ''
+  Frog:
+    Attack: 2
+    Hearts: 15
+    Speed: 0.7
+    Ability: ''
+  Bee:
+    Attack: 1
+    Hearts: 15
+    Speed: 1.5
+    Ability: ''
+  Mooshroom:
+    Attack: 2
+    Hearts: 30
+    Speed:
+    Ability: ''
+  SnowGolem:
+    Attack: 3
+    Hearts: 30
+    Speed: 0.6
+    Ability: ''
+  IronGolem:
+    Attack: 4
+    Hearts: 50
+    Speed: 0.4
+    Ability: ''
+  Turtle:
+    Attack: 2
+    Hearts: 20
+    Speed: 0.5
+    Ability: ''
+  Rabbit:
+    Attack: 3
+    Hearts: 15
+    Speed: 0.6
+    Ability: ''
