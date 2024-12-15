@@ -27,6 +27,7 @@ public final class PetLife extends JavaPlugin {
     Config gameMgr = new Config(this, "gameManager.yml");
     Config playerData = new Config(this, "playerData.yml");
     Config petsData = new Config(this, "petsData.yml");
+    Config messagesData = new Config(this, "messages.yml");
 
     @Override
     public void onEnable() {

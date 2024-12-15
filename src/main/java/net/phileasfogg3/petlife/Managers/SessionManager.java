@@ -10,10 +10,12 @@ public class SessionManager {
 
     private final Config gameMgr;
     private final Config playerData;
+    private Config messagesData;
 
-    public SessionManager(Config gameMgr, Config playerData) {
+    public SessionManager(Config gameMgr, Config playerData, Config messagesData) {
         this.gameMgr = gameMgr;
         this.playerData = playerData;
+        this.messagesData = messagesData;
     }
 
     public void sessionTimeInitializer() {
@@ -137,7 +139,7 @@ public class SessionManager {
                 gameMgr.getData().set("session-active", false);
                 gameMgr.save();
                 // Punish Boogeymen that have failed
-                BoogeymenManager BM = new BoogeymenManager(gameMgr, playerData);
+                BoogeymenManager BM = new BoogeymenManager(gameMgr, playerData, messagesData);
                 BM.punishBoogeymen();
                 // Send message to players - session over
                 for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
@@ -184,7 +186,7 @@ public class SessionManager {
         gameMgr.save();
         sessionTimeInitializer();
         // Picks boogeymen
-        BoogeymenManager bM = new BoogeymenManager(gameMgr, playerData);
+        BoogeymenManager bM = new BoogeymenManager(gameMgr, playerData, messagesData);
         bM.selectBoogeymen();
         // Distribute Pets
     }

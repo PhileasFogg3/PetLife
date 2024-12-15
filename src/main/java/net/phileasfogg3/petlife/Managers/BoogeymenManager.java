@@ -6,18 +6,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class BoogeymenManager {
     private Config gameMgr;
     private Config playerData;
+    private Config messagesData;
 
-    public BoogeymenManager(Config gameMgr, Config playerData) {
+    public BoogeymenManager(Config gameMgr, Config playerData, Config messagesData) {
         this.gameMgr = gameMgr;
         this.playerData = playerData;
+        this.messagesData = messagesData;
     }
 
     public void selectBoogeymen() {
@@ -37,7 +36,9 @@ public class BoogeymenManager {
                             // Tell the chosen players that they are the Boogeymen
                             UUID uuid = UUID.fromString(key);
                             Player player = Bukkit.getPlayer(uuid);
-                            player.sendMessage("You are the Boogeyman and are now hostile to all players. Kill to be cured, or you shall be punished...");
+                            MessageManager MM = new MessageManager(gameMgr, messagesData);
+                            MM.determineMessageLocation("chat", Objects.requireNonNull(messagesData.getData().getString("chat-yes-boogey")), "sessionInfo", player);
+                            //player.sendMessage("You are the Boogeyman and are now hostile to all players. Kill to be cured, or you shall be punished...");
                         }
                     });
                 }
@@ -46,7 +47,9 @@ public class BoogeymenManager {
     }
 
     public void cureBoogeymen(Player player) {
-        player.sendMessage("You have been cured! You are no longer hostile to other players");
+        MessageManager MM = new MessageManager(gameMgr, messagesData);
+        MM.determineMessageLocation("chat", Objects.requireNonNull(messagesData.getData().getString("chat-cure-boogey")), "sessionInfo", player);
+        //player.sendMessage("You have been cured! You are no longer hostile to other players");
         Map<String, Object> playerDataMap = getPlayerValues(player.getUniqueId().toString());
         playerDataMap.put("Boogeyman", false);
         saveConfig(player.getUniqueId().toString(), playerDataMap);
@@ -62,7 +65,9 @@ public class BoogeymenManager {
                 playerDataMap.put("Lives", oldLife-1);
                 playerDataMap.put("Boogeyman", false);
                 saveConfig(player.getUniqueId().toString(), playerDataMap);
-                player.sendMessage("You have failed. You have now been punished");
+                MessageManager MM = new MessageManager(gameMgr, messagesData);
+                MM.determineMessageLocation("chat", Objects.requireNonNull(messagesData.getData().getString("chat-punish-boogey")), "sessionInfo", player);
+                //player.sendMessage("You have failed. You have now been punished");
                 PlayerNameManager pNM = new PlayerNameManager(playerData, gameMgr);
                 pNM.getPlayer(player);
             }

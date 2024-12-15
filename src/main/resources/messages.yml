@@ -1,1 +1,22 @@
 # HALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+# Plugin Prefix
+message-prefix: "&7{&aP&ee&ct &7Life}&r "
+#
+chat-session-start: "&aSESSION STARTED GO GO GO!!!!!!&r"
+chat-session-break-soon: "&aThe break will be in 5 minutes.&r"
+chat-session-break: "&aComfort break time! Go get snacks and stretch your legs, we'll be back soon!&r"
+chat-session-break-end-soon: "&aThe break will be over soon! Get ready...&r"
+chat-session-break-end: "&aThe break is over... Good luck!&r"
+chat-session-end-soon: "&aThe session will be over in 5 minutes.&r"
+chat-session-end: "&aThe session is now over. Congrats! You made it.&r"
+chat-not-boogey: "&aYou are not the Boogey Man!&r"
+chat-yes-boogey: "&cYou are now the Boogey Man. It is your job to kill a player on their &eYellow or &aGreen &cLife. If you fail to kill, you will be punished...&r"
+chat-cure-boogey: "&aYou have killed another player. You're no longer hostile. Lets just hope you're forgiven...&r"
+chat-punish-boogey: "&cYou have failed to kill as the Boogey Man... You have lost a life as punishment.&r"
+chat-pet-selected: "&aPets have been assigned..."
+chat-pet-summoned: "&aWOOOSH.... Your pet has arrived...&r"
+chat-pet-death: "&aYour pet has died... You are now vulnerable&r"
+chat-pet-sat: "&aYour pet is sitting down!&r"
+chat-pet-no-sit: "&aYour pet is no longer sat down!&r"
+#
+chat-admin-confirmation: "&cConfirmation is required for the session to proceed!&r"
