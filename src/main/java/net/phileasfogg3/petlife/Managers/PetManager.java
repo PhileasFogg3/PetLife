@@ -5,6 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.phileasfogg3.petlife.PetLife;
 import net.phileasfogg3.petlife.Pets.PetAttributes;
+import net.phileasfogg3.petlife.Pets.Pets.GeppyPet;
 import net.phileasfogg3.petlife.Pets.Pets.SheepPet;
 import org.bukkit.craftbukkit.v1_21_R1.CraftWorld;
 import org.bukkit.entity.Player;
@@ -45,6 +46,9 @@ public class PetManager {
             
             case "Sheep":
                 pet = new SheepPet(petOwner.getLocation(), characteristics, petOwner);
+                break;
+            case "Geppy":
+                pet = new GeppyPet(petOwner.getLocation(), characteristics, petOwner);
                 break;
             default:
                 System.out.println(petType + " has not yet been implemented");

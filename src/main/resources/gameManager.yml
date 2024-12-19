@@ -44,6 +44,11 @@ teams:
 #
 #
 #
+# Chance for a mob to drop a spawn egg. Should give as a decimal. 0.01 is the same as 1%
+spawn-egg-drop-chance: 0.01
+#
+#
+#
 # ABSOLUTELY DON'T TOUCH THIS PART, EVEN IF YOU THINK YOU KNOW WHAT YOU'RE DOING, YOU DON'T. PHIL, I'M LOOKING AT YOU
 confirmation:
   required: false

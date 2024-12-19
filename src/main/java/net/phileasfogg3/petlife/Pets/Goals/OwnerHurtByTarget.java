@@ -1,6 +1,46 @@
 package net.phileasfogg3.petlife.Pets.Goals;
 
+import java.util.EnumSet;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.target.TargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
 
+public class OwnerHurtByTarget extends TargetGoal {
+    private final Mob mob;
+    private final LivingEntity owner;
+    private LivingEntity ownerLastHurtBy;
+    private int timestamp;
+
+    public OwnerHurtByTarget(Mob mob, LivingEntity owner) {
+        super(mob, false);
+        this.mob = mob;
+        this.owner = owner;
+        this.setFlags(EnumSet.of(Flag.TARGET));
+    }
+
+    public boolean canUse() {
+        if (this.owner == null) {
+            return false;
+        } else {
+            this.ownerLastHurtBy = this.owner.getLastHurtByMob();
+            int i = this.owner.getLastHurtByMobTimestamp();
+            return i != this.timestamp && this.canAttack(this.ownerLastHurtBy, TargetingConditions.DEFAULT);
+        }
+    }
+
+    public void start() {
+        this.mob.setTarget(this.ownerLastHurtBy, TargetReason.TARGET_ATTACKED_OWNER, true);
+        if (this.owner != null) {
+            this.timestamp = this.owner.getLastHurtByMobTimestamp();
+        }
+
+        super.start();
+    }
+}
+
+/*
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
@@ -42,3 +82,4 @@ public class OwnerHurtByTarget extends TargetGoal {
         return false;
     }
 }
+*/

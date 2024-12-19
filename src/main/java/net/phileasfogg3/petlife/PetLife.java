@@ -3,15 +3,21 @@ package net.phileasfogg3.petlife;
 import net.nexia.nexiaapi.Config;
 import net.phileasfogg3.petlife.Commands.PetLifeAdminCommand;
 import net.phileasfogg3.petlife.Commands.PetLifeCommand;
+import net.phileasfogg3.petlife.Events.MobEvents;
 import net.phileasfogg3.petlife.Events.PetEvents;
 import net.phileasfogg3.petlife.Events.PlayerEvents;
 import net.phileasfogg3.petlife.Events.WorldEvents;
+import net.phileasfogg3.petlife.Managers.RecipesManager;
 import net.phileasfogg3.petlife.Managers.TeamsManager;
 import net.phileasfogg3.petlife.Pets.Pet;
 import net.phileasfogg3.petlife.Pets.PetAttributes;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import java.util.HashMap;
@@ -35,6 +41,7 @@ public final class PetLife extends JavaPlugin {
         Instance = this;
         registerEvents();
         registerCommands();
+        registerRecipes();
         createTeams();
         laodPets();
 
@@ -54,6 +61,7 @@ public final class PetLife extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerEvents(playerData, gameMgr), this); // Make sure the necessary yml files are passed into the events
         Bukkit.getPluginManager().registerEvents(new WorldEvents(), this);
         Bukkit.getPluginManager().registerEvents(new PetEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new MobEvents(gameMgr, playerData, messagesData), this);
     }
 
     public void registerCommands() {
@@ -61,6 +69,12 @@ public final class PetLife extends JavaPlugin {
         getCommand("PetLife").setTabCompleter(new PetLifeCommand(playerData, gameMgr, petsData));
         getCommand("PetLifeAdmin").setExecutor(new PetLifeAdminCommand(playerData, gameMgr)); // Make sure the necessary yml files are passed into the commands
         getCommand("PetLifeAdmin").setTabCompleter(new PetLifeAdminCommand(playerData, gameMgr));
+    }
+
+    public void registerRecipes() {
+        RecipesManager RM = new RecipesManager();
+        RM.tntRecipe();
+        RM.spawnerRecipe();
     }
 
     public void createTeams() {
