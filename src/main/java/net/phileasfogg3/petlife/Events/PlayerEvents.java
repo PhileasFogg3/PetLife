@@ -19,10 +19,12 @@ public class PlayerEvents implements Listener {
 
     private Config playerData;
     private Config gameMgr;
+    private Config messagesData;
 
-    public PlayerEvents(Config playerData, Config gameMgr) {
+    public PlayerEvents(Config playerData, Config gameMgr, Config messagesData) {
         this.playerData = playerData;
         this.gameMgr = gameMgr;
+        this.messagesData = messagesData;
     }
 
     @EventHandler
@@ -85,7 +87,7 @@ public class PlayerEvents implements Listener {
             // A null player means it can't have been a boogeymen kill.
             System.out.println(victim.getName() + " has been killed by the world!");
         } else if (playerData.getData().getBoolean("players." + killer.getUniqueId() + "Boogeyman")) {
-            BoogeymenManager BM = new BoogeymenManager(playerData, gameMgr);
+            BoogeymenManager BM = new BoogeymenManager(playerData, gameMgr, messagesData);
             BM.cureBoogeymen(killer);
         }
     }

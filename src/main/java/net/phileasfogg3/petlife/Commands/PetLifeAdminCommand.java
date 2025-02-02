@@ -21,10 +21,12 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
 
     private Config playerData;
     private Config gameMgr;
+    private Config messagesData;
 
-    public PetLifeAdminCommand(Config playerData, Config gameMgr) {
+    public PetLifeAdminCommand(Config playerData, Config gameMgr, Config messagesData) {
         this.playerData = playerData;
         this.gameMgr = gameMgr;
+        this.messagesData = messagesData;
     }
 
     @Override
@@ -43,12 +45,12 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
                                 // Do this if this is the first session.
                                 System.out.println("Do this if this is the first session.");
                                 // Starts the session
-                                SessionManager sM = new SessionManager(gameMgr, playerData);
+                                SessionManager sM = new SessionManager(gameMgr, playerData, messagesData);
                                 sM.sessionStart(sessionNumber);
                             } else if (sessionNumber > 0 && !sessionActive) {
                                 // Do this if it is not the first session and the session has not already started.
                                 System.out.println("Do this if it is not the first session and the session has not already started.");
-                                SessionManager sM = new SessionManager(gameMgr, playerData);
+                                SessionManager sM = new SessionManager(gameMgr, playerData, messagesData);
                                 sM.sessionStart(sessionNumber);
                             } else if (sessionActive){
                                 // Do this if the session has already started.
@@ -102,7 +104,7 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
                             Player targetPlayer = Bukkit.getServer().getPlayerExact(playerName);
                             if (targetPlayer !=null && targetPlayer.isOnline() && playerData.getData().getBoolean("players." + targetPlayer.getUniqueId().toString() + ".Boogeyman")) {
                                 // Cures the specific player if they are the boogeyman
-                                BoogeymenManager BM = new BoogeymenManager(gameMgr, playerData);
+                                BoogeymenManager BM = new BoogeymenManager(gameMgr, playerData, messagesData);
                                 BM.cureBoogeymen(targetPlayer);
                             } else {
                                 player.sendMessage("Unable to cure this player!");
@@ -127,13 +129,13 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
                             if (gameMgr.getData().getInt("session-information.first-half-progress") == -1 && gameMgr.getData().getInt("session-information.break-progress") == -1 && gameMgr.getData().getInt("session-information.second-half-progress") == -1) {
                                 player.sendMessage("There is nothing to resume");
                             } else if (gameMgr.getData().getInt("session-information.first-half-progress") != -1){
-                                SessionManager sM = new SessionManager(gameMgr, playerData);
+                                SessionManager sM = new SessionManager(gameMgr, playerData, messagesData);
                                 sM.resumeInitializer(gameMgr.getData().getInt("session-information.first-half-progress"), 1);
                             } else if (gameMgr.getData().getInt("session-information.break-progress") != -1){
-                                SessionManager sM = new SessionManager(gameMgr, playerData);
+                                SessionManager sM = new SessionManager(gameMgr, playerData, messagesData);
                                 sM.resumeInitializer(gameMgr.getData().getInt("session-information.break-progress"), 2);
                             } else if (gameMgr.getData().getInt("session-information.second-half-progress") != -1){
-                                SessionManager sM = new SessionManager(gameMgr, playerData);
+                                SessionManager sM = new SessionManager(gameMgr, playerData, messagesData);
                                 sM.resumeInitializer(gameMgr.getData().getInt("session-information.second-half-progress"), 3);
                             } else {
                                 player.sendMessage("Something has gone wrong! oopsie. Phil bad");

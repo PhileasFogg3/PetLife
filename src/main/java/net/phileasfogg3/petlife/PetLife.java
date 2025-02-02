@@ -58,7 +58,7 @@ public final class PetLife extends JavaPlugin {
     }
 
     public void registerEvents() {
-        Bukkit.getPluginManager().registerEvents(new PlayerEvents(playerData, gameMgr), this); // Make sure the necessary yml files are passed into the events
+        Bukkit.getPluginManager().registerEvents(new PlayerEvents(playerData, gameMgr, messagesData), this); // Make sure the necessary yml files are passed into the events
         Bukkit.getPluginManager().registerEvents(new WorldEvents(), this);
         Bukkit.getPluginManager().registerEvents(new PetEvents(), this);
         Bukkit.getPluginManager().registerEvents(new MobEvents(gameMgr, playerData, messagesData), this);
@@ -67,8 +67,8 @@ public final class PetLife extends JavaPlugin {
     public void registerCommands() {
         getCommand("PetLife").setExecutor(new PetLifeCommand(playerData, gameMgr, petsData));
         getCommand("PetLife").setTabCompleter(new PetLifeCommand(playerData, gameMgr, petsData));
-        getCommand("PetLifeAdmin").setExecutor(new PetLifeAdminCommand(playerData, gameMgr)); // Make sure the necessary yml files are passed into the commands
-        getCommand("PetLifeAdmin").setTabCompleter(new PetLifeAdminCommand(playerData, gameMgr));
+        getCommand("PetLifeAdmin").setExecutor(new PetLifeAdminCommand(playerData, gameMgr, messagesData)); // Make sure the necessary yml files are passed into the commands
+        getCommand("PetLifeAdmin").setTabCompleter(new PetLifeAdminCommand(playerData, gameMgr, messagesData));
     }
 
     public void registerRecipes() {
