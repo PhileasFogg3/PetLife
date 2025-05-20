@@ -20,3 +20,8 @@ chat-pet-sat: "&aYour pet is sitting down!&r"
 chat-pet-no-sit: "&aYour pet is no longer sat down!&r"
 #
 chat-admin-confirmation: "&cConfirmation is required for the session to proceed!&r"
+#
+no-permission: "&cYou don't have permission to use this command!&r"
+set-life: "&cYou have set %player%'s life to %life%.&r"
+no-such-player: "&cThat player is not online or doesn't exist.&r"
+invalid-lives: "&cYou have set an invalid number of lives!&r"

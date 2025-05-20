@@ -2,6 +2,7 @@ package net.phileasfogg3.petlife.Commands;
 
 import net.nexia.nexiaapi.Config;
 import net.phileasfogg3.petlife.Managers.BoogeymenManager;
+import net.phileasfogg3.petlife.Managers.MessageManager;
 import net.phileasfogg3.petlife.Managers.PlayerNameManager;
 import net.phileasfogg3.petlife.Managers.SessionManager;
 import org.bukkit.Bukkit;
@@ -12,10 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
 
@@ -33,6 +31,7 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
+            MessageManager MM = new MessageManager(gameMgr, messagesData);
             if (args.length >=1) {
                 switch (args[0]) {
                     case "sessionStart":
@@ -57,7 +56,7 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
                                 System.out.println("The session has already started. If you're trying to resume after a crash, use /petlifeadmin resume");
                             }
                         } else {
-                            player.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
+                            MM.determineMessageLocation("chat", Objects.requireNonNull(messagesData.getData().getString("no-permission")), "admin", player);
                         }
                         break;
                     case "setlife":
@@ -76,15 +75,16 @@ public class PetLifeAdminCommand implements CommandExecutor, TabCompleter {
                                         saveConfig(targetPlayer, playerDataMap);
                                         PlayerNameManager PNM = new PlayerNameManager(playerData, gameMgr);
                                         PNM.getPlayer(targetPlayer);
-                                        player.sendMessage("You have set " + targetPlayer.getDisplayName() + "'s life to " + life + ".");
+                                        String formattedMessage = messagesData.getData().getString("set-life").replace("%player%", targetPlayer.getDisplayName()).replace("%life%", String.valueOf(life));
+                                        MM.determineMessageLocation("chat", formattedMessage, "admin", player);
                                     } else {
-                                        player.sendMessage(ChatColor.RED + "That player is not online or doesn't exist.");
+                                        MM.determineMessageLocation("chat", Objects.requireNonNull(messagesData.getData().getString("no-such-player")), "admin", player);
                                     }
                                 } else {
-                                    player.sendMessage(ChatColor.RED + "You have set an invalid number of lives!");
+                                    MM.determineMessageLocation("chat", Objects.requireNonNull(messagesData.getData().getString("invalid-lives")), "admin", player);
                                 }
                             } else {
-                                player.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
+                                MM.determineMessageLocation("chat", Objects.requireNonNull(messagesData.getData().getString("no-permission")), "admin", player);
                             }
                         }
                         break;
